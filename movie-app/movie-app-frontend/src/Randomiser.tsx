@@ -6,7 +6,7 @@ const Randomiser: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const TMDB_API_KEY = "08a639cc29b41be25f2a13703eed4523";
+  const TMDB_API_KEY = "2088975030e9d8f52f6cb2168f3657db";
   const TMDB_BASE_URL = "https://api.themoviedb.org/3";
   const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 

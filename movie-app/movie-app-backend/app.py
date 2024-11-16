@@ -1,29 +1,35 @@
-# movie-app-backend/app.py
-from flask import Flask, jsonify
-import requests
-from flask_cors import CORS
 import os
+from flask import Flask, jsonify
+from flask_cors import CORS
+import requests
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env
+load_dotenv()
 
+# Initialize Flask app and allow CORS
 app = Flask(__name__)
-CORS(app)  # Enable CORS for cross-origin requests from React frontend
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allows all origins during dev
 
-TMDB_API_KEY = os.getenv("TMDB_API_KEY")
-TMDB_BASE_URL = "https://api.themoviedb.org/3"
+# Load API key from .env file
+api_key = os.getenv('TMDB_API_KEY')
 
-@app.route("/api/now_playing", methods=["GET"])
+@app.route('/api/now_playing', methods=['GET'])
 def now_playing():
-    # Fetch "Now Playing" movies from TMDB
-    tmdb_url = f"{TMDB_BASE_URL}/movie/now_playing?api_key={TMDB_API_KEY}&language=en-US&page=1"
+    url = f'https://api.themoviedb.org/3/movie/now_playing?api_key={api_key}&language=en-US&page=1'
     try:
-        response = requests.get(tmdb_url)
-        response.raise_for_status()
-        data = response.json()
-        return jsonify(data)  # Return data to frontend as JSON
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": "Failed to fetch movies."}), 500
+        # Send the request to TMDB API
+        response = requests.get(url)
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+        # Check if the response is successful
+        if response.status_code != 200:
+            return jsonify({"error": "Failed to fetch data from TMDB"}), 500
+
+        # Return TMDB response data
+        return jsonify(response.json())
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)  # Make sure the backend runs on port 5000
+
