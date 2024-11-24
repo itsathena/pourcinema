@@ -70,7 +70,7 @@ const Randomiser: React.FC = () => {
         return null;
       });
 
-      setMovies(fetchedMovies.filter((movie) => movie !== null)); // Remove null values if no movies were found
+      setMovies(fetchedMovies.filter((movie) => movie !== null));
     } catch (err) {
       setError("Failed to fetch movies.");
       console.error(err);
@@ -82,7 +82,7 @@ const Randomiser: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#1d1d1d",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -97,10 +97,10 @@ const Randomiser: React.FC = () => {
           fontWeight: "bold",
           marginBottom: 3,
           fontFamily: "'Roboto', sans-serif",
-          color: "#333",
+          color: "#FFD700", // Gold color for the title
         }}
       >
-        Random Movie Generator by Genre
+        Movie Marathon
       </Typography>
 
       <Autocomplete
@@ -109,16 +109,31 @@ const Randomiser: React.FC = () => {
         getOptionLabel={(option) => option.name}
         onChange={(event, newValue) => setSelectedGenres(newValue)}
         renderInput={(params) => (
-          <TextField {...params} label="Select Genres" />
+          <TextField
+            {...params}
+            label="Select Genres"
+            sx={{
+              input: { color: "#fff" }, // White text inside the input
+              label: { color: "#FFD700" }, // Gold label
+            }}
+          />
         )}
         value={selectedGenres}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         sx={{
-          width: 300,
+          width: 600,
           marginBottom: 3,
-          backgroundColor: "#fff",
+          backgroundColor: "white", // Dark background for the input
           borderRadius: 1,
           boxShadow: 2,
+          "& .MuiAutocomplete-option": {
+            backgroundColor: "#1d1d1d", // Dark background for options
+            color: "#fff", // White text for options
+            "&:hover": {
+              backgroundColor: "#FFD700", // Gold on hover
+              color: "#1d1d1d", // Dark text on hover
+            },
+          },
         }}
         disableCloseOnSelect
       />
@@ -134,17 +149,18 @@ const Randomiser: React.FC = () => {
           fontSize: "1rem",
           textTransform: "none",
           borderRadius: 4,
-          backgroundColor: "#007aff",
-          "&:hover": { backgroundColor: "#005bb5" },
+          color: "black",
+          backgroundColor: "#FFD700", // Gold color for button
+          "&:hover": { backgroundColor: "#FFB700" }, // Slightly darker gold on hover
         }}
       >
         Generate 3 Movies
       </Button>
 
       {loading ? (
-        <CircularProgress sx={{ marginTop: 3 }} />
+        <CircularProgress sx={{ marginTop: 3, color: "#FFD700" }} />
       ) : error ? (
-        <Typography color="error" sx={{ marginTop: 3 }}>
+        <Typography color="error" sx={{ marginTop: 3, color: "#FF6347" }}>
           {error}
         </Typography>
       ) : (
@@ -158,7 +174,8 @@ const Randomiser: React.FC = () => {
                     boxShadow: 3,
                     borderRadius: 2,
                     overflow: "hidden",
-                    backgroundColor: "#fff",
+                    backgroundColor: "#1d1d1d", // Dark background for cards
+                    color: "#fff", // White text in the card
                   }}
                 >
                   <CardMedia
@@ -177,7 +194,7 @@ const Randomiser: React.FC = () => {
                         fontWeight: "bold",
                         marginBottom: 1,
                         textAlign: "center",
-                        color: "#333",
+                        color: "#FFD700", // Gold color for title
                       }}
                     >
                       {movie.title}
@@ -186,7 +203,7 @@ const Randomiser: React.FC = () => {
                       variant="body2"
                       sx={{
                         marginBottom: 2,
-                        color: "#666",
+                        color: "#ccc", // Light gray for description
                         textAlign: "center",
                       }}
                     >
