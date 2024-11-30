@@ -1,0 +1,21 @@
+[debug] [2024-11-30T15:50:57.707Z] ----------------------------------------------------------------------
+[debug] [2024-11-30T15:50:57.709Z] Command:       /usr/local/bin/firebase /Users/adheenadev/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase deploy
+[debug] [2024-11-30T15:50:57.709Z] CLI Version:   13.27.0
+[debug] [2024-11-30T15:50:57.709Z] Platform:      darwin
+[debug] [2024-11-30T15:50:57.710Z] Node Version:  v18.5.0
+[debug] [2024-11-30T15:50:57.712Z] Time:          Sat Nov 30 2024 21:20:57 GMT+0530 (India Standard Time)
+[debug] [2024-11-30T15:50:57.712Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-30T15:50:57.831Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-30T15:50:57.832Z] > authorizing via signed-in user (adheenadev@gmail.com)
+[debug] [2024-11-30T15:50:57.833Z] [iam] checking project pourcinema-5cae6 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-11-30T15:50:57.834Z] Checked if tokens are valid: true, expires at: 1732984194005
+[debug] [2024-11-30T15:50:57.835Z] Checked if tokens are valid: true, expires at: 1732984194005
+[debug] [2024-11-30T15:50:57.837Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/pourcinema-5cae6:testIamPermissions [none]
+[debug] [2024-11-30T15:50:57.838Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/pourcinema-5cae6:testIamPermissions x-goog-quota-user=projects/pourcinema-5cae6
+[debug] [2024-11-30T15:50:57.838Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/pourcinema-5cae6:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-11-30T15:50:59.251Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/pourcinema-5cae6:testIamPermissions 200
+[debug] [2024-11-30T15:50:59.256Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/pourcinema-5cae6:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-11-30T15:50:59.257Z] Checked if tokens are valid: true, expires at: 1732984194005
+[debug] [2024-11-30T15:50:59.261Z] Checked if tokens are valid: true, expires at: 1732984194005
+[debug] [2024-11-30T15:50:59.262Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pourcinema-5cae6 [none]
