@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Chip, IconButton } from "@mui/material";
 import axios from "axios";
 import {
   Box,
@@ -7,15 +8,16 @@ import {
   CircularProgress,
   Autocomplete,
   TextField,
-  Card,
-  CardMedia,
-  CardContent,
+  // Card,
+  // CardMedia,
+  // CardContent,
   Container,
-  Grid,
+  // Grid,
 } from "@mui/material";
+import MovieCard from "./shared/components/movieCard.tsx";
 
 const Randomiser: React.FC = () => {
-  const [movies, setMovies] = useState<any[]>([]); // Store the 3 movies
+  const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
@@ -23,7 +25,7 @@ const Randomiser: React.FC = () => {
   const TMDB_BASE_URL = "https://api.themoviedb.org/3";
   const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-  // Hardcoded genre list with genre names and corresponding genre IDs
+  // Hardcoded genre list 
   const genres = [
     { id: 28, name: "Action" },
     { id: 12, name: "Adventure" },
@@ -46,15 +48,14 @@ const Randomiser: React.FC = () => {
     { id: 37, name: "Western" },
   ];
 
-  const [selectedGenres, setSelectedGenres] = useState<any[]>([]); // Store the selected genres
+  const [selectedGenres, setSelectedGenres] = useState<any[]>([]); 
 
   const fetchRandomMoviesByGenres = async () => {
     setLoading(true);
     setError("");
-    setMovies([]); // Reset previous movies
+    setMovies([]);
 
     try {
-      // Fetch movies for each selected genre simultaneously
       const movieRequests = selectedGenres.map((genre: any) =>
         axios.get(
           `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&language=en-US&with_genres=${genre.id}&page=1`
@@ -88,7 +89,7 @@ const Randomiser: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        paddingTop: "80px", // Padding to avoid overlap with fixed navbar
+        paddingTop: "80px", 
       }}
     >
       <Typography
@@ -97,7 +98,7 @@ const Randomiser: React.FC = () => {
           fontWeight: "bold",
           marginBottom: 3,
           fontFamily: "'Roboto', sans-serif",
-          color: "#FFD700", // Gold color for the title
+          color: "#FFD700",
         }}
       >
         Movie Marathon
@@ -107,31 +108,66 @@ const Randomiser: React.FC = () => {
         multiple
         options={genres}
         getOptionLabel={(option) => option.name}
-        onChange={(event, newValue) => setSelectedGenres(newValue)}
+        onChange={(event, newValue) => {
+          
+          setSelectedGenres(newValue);
+        }}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip
+              {...getTagProps({ index })}
+              label={option.name}
+              sx={{
+                backgroundColor: "#FFD700",
+                color: "#1d1d1d", 
+                margin: "2px",
+              }}
+              onDelete={() => {
+                setSelectedGenres(value.filter((genre, i) => i !== index));
+              }}
+            />
+          ))
+        }
         renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Select Genres"
-            sx={{
-              input: { color: "#fff" }, // White text inside the input
-              label: { color: "#FFD700" }, // Gold label
-            }}
-          />
+          <Box
+            sx={{ position: "relative", display: "flex", alignItems: "center" }}
+          >
+            <TextField
+              {...params}
+              label="Select Genres"
+              sx={{
+                input: { color: "#fff" }, 
+                label: { color: "#FFD700" },
+                flex: 1, 
+              }}
+            />
+            {selectedGenres.length > 0 && (
+              <IconButton
+                onClick={() => setSelectedGenres([])} 
+                sx={{
+                  position: "absolute",
+                  right: 0,
+                  color: "#FFD700", 
+                }}
+              >
+              </IconButton>
+            )}
+          </Box>
         )}
         value={selectedGenres}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
+        isOptionEqualToValue={(option, value) => false} 
         sx={{
           width: 600,
           marginBottom: 3,
-          backgroundColor: "white", // Dark background for the input
+          backgroundColor: "white",
           borderRadius: 1,
           boxShadow: 2,
           "& .MuiAutocomplete-option": {
-            backgroundColor: "#1d1d1d", // Dark background for options
-            color: "#fff", // White text for options
+            backgroundColor: "#1d1d1d",
+            color: "#fff",
             "&:hover": {
-              backgroundColor: "#FFD700", // Gold on hover
-              color: "#1d1d1d", // Dark text on hover
+              backgroundColor: "#FFD700",
+              color: "#1d1d1d",
             },
           },
         }}
@@ -150,8 +186,8 @@ const Randomiser: React.FC = () => {
           textTransform: "none",
           borderRadius: 4,
           color: "black",
-          backgroundColor: "#FFD700", // Gold color for button
-          "&:hover": { backgroundColor: "#FFB700" }, // Slightly darker gold on hover
+          backgroundColor: "#FFD700", 
+          "&:hover": { backgroundColor: "#FFB700" }, 
         }}
       >
         Generate 3 Movies
@@ -165,65 +201,16 @@ const Randomiser: React.FC = () => {
         </Typography>
       ) : (
         <Container sx={{ marginTop: 3 }}>
-          <Grid container spacing={3}>
-            {movies.map((movie, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    overflow: "hidden",
-                    backgroundColor: "#1d1d1d", // Dark background for cards
-                    color: "#fff", // White text in the card
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    image={`${TMDB_IMAGE_BASE_URL}${movie.poster_path}`}
-                    alt={movie.title}
-                    sx={{
-                      objectFit: "cover",
-                      height: 400,
-                    }}
-                  />
-                  <CardContent sx={{ padding: 2 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "bold",
-                        marginBottom: 1,
-                        textAlign: "center",
-                        color: "#FFD700", // Gold color for title
-                      }}
-                    >
-                      {movie.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        marginBottom: 2,
-                        color: "#ccc", // Light gray for description
-                        textAlign: "center",
-                      }}
-                    >
-                      {movie.overview}
-                    </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      color="textSecondary"
-                      sx={{
-                        textAlign: "center",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      <strong>Release Date:</strong> {movie.release_date}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+          {movies.map((movie, index) => (
+            <MovieCard
+              key={index}
+              posterPath={movie.poster_path}
+              title={movie.title}
+              overview={movie.overview}
+              releaseDate={movie.release_date}
+              imageBaseUrl={TMDB_IMAGE_BASE_URL}
+            />
+          ))}
         </Container>
       )}
     </Box>
